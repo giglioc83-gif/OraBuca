@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test del Disagio — OraBuca</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --cream: #F5F0E8;
+    --ink: #1A1714;
+    --rust: #C4450A;
+    --sand: #D9C9A8;
+    --muted: #7A7060;
+    --pale: #EDE6D4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    width: 100%;
+  }
+
+  .header {
+    text-align: left;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .orabuca-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.8rem, 7vw, 4.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.8rem;
+  }
+
+  h1 em { font-style: italic; color: var(--rust); }
+
+  .subtitle {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 480px;
+    font-weight: 300;
+    margin-top: 1rem;
+  }
+
+  .progress-wrap {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--sand);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--rust);
+    border-radius: 1px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .progress-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .card {
+    background: white;
+    border: 1px solid var(--sand);
+    padding: 2.5rem;
+    margin-bottom: 1.5rem;
+    animation: slideIn 0.35s ease forwards;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-number {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1rem;
+  }
+
+  .question-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    line-height: 1.4;
+    margin-bottom: 2rem;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--sand);
+    background: var(--cream);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--ink);
+    width: 100%;
+  }
+
+  .option:hover { border-color: var(--rust); background: var(--pale); }
+  .option.selected { border-color: var(--rust); background: var(--pale); }
+
+  .option-letter {
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--rust);
+    letter-spacing: 0.1em;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    width: 1rem;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 1.6rem;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn:hover { background: var(--ink); color: var(--cream); }
+  .btn.primary { background: var(--ink); color: var(--cream); }
+  .btn.primary:hover { background: var(--rust); border-color: var(--rust); }
+  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn:disabled:hover { background: transparent; color: var(--ink); }
+
+  .result { display: none; animation: slideIn 0.5s ease forwards; }
+  .result.show { display: block; }
+
+  .result-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .result-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+
+  .result-type {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-type em { font-style: italic; color: var(--rust); }
+
+  .result-axes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.2rem 0;
+  }
+
+  .axis-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .axis-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .axis-track { height: 3px; background: var(--sand); }
+
+  .axis-fill {
+    height: 100%;
+    background: var(--rust);
+    transition: width 1s cubic-bezier(0.4,0,0.2,1) 0.4s;
+    width: 0%;
+  }
+
+  .result-card {
+    background: white;
+    border: 1px solid var(--sand);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .result-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+
+  .result-desc {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+
+  .result-detail {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .result-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+
+  .trait {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--sand);
+    color: var(--muted);
+  }
+
+  .restart-wrap { text-align: center; padding-top: 1rem; }
+
+  .quiz-section { display: none; }
+  .quiz-section.show { display: block; }
+  .intro-section { display: block; }
+  .intro-section.hide { display: none; }
+  .start-note { font-size: 0.7rem; color: var(--muted); margin-top: 0.8rem; font-weight: 300; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="intro-section" id="introSection">
+    <div class="header">
+      <div class="orabuca-tag">OraBuca — test interattivo</div>
+      <h1>Il Test<br>del <em>Disagio</em></h1>
+      <p class="subtitle">
+        L'imbarazzo, per sé e per gli altri. Ma anche quel senso di perplessità di fronte a un mondo che non torna.<br><br>
+        Quanto riesci a nuotarci dentro?<br>
+        8 domande. Nessuna risposta giusta. Solo verità scomode.
+      </p>
+    </div>
+    <button class="btn primary" onclick="startQuiz()">Inizia il test</button>
+    <p class="start-note">~ 3 minuti · anonimo · tragicomico</p>
+  </div>
+
+  <div class="quiz-section" id="quizSection">
+    <div class="header">
+      <div class="orabuca-tag">OraBuca — test del disagio</div>
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <span class="progress-label" id="progressLabel">1 / 8</span>
+      </div>
+    </div>
+    <div id="questionWrap"></div>
+    <div class="nav">
+      <button class="btn" id="prevBtn" onclick="prevQuestion()" disabled>← indietro</button>
+      <button class="btn primary" id="nextBtn" onclick="nextQuestion()" disabled>avanti →</button>
+    </div>
+  </div>
+
+  <div class="result" id="resultSection">
+    <div class="result-header">
+      <div class="result-tag">il tuo profilo del disagio</div>
+      <div class="result-type" id="resultTitle"></div>
+      <div class="result-axes">
+        <div class="axis-wrap">
+          <span class="axis-label">sensibilità al disagio</span>
+          <div class="axis-track"><div class="axis-fill" id="axisFillS"></div></div>
+        </div>
+        <div class="axis-wrap">
+          <span class="axis-label">capacità di gestione</span>
+          <div class="axis-track"><div class="axis-fill" id="axisFillG"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <p class="result-desc" id="resultDesc"></p>
+      <p class="result-detail" id="resultDetail"></p>
+      <div class="result-traits" id="resultTraits"></div>
+    </div>
+    <div class="restart-wrap">
+      <button class="btn" onclick="restart()">ricomincia da capo</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// s = sensibilità (1 sente poco → 4 sente molto)
+// g = gestione   (1 gestisce male → 4 gestisce bene)
+
+const questions = [
+  {
+    title: "D1 — Messaggio ignorato",
+    text: "Mandi un messaggio importante. Tre giorni di silenzio. Cosa fai?",
+    options: [
+      { text: "Rileggo il messaggio ogni due ore per capire dove ho sbagliato.", s: 4, g: 1 },
+      { text: "Lo accetto. Le persone hanno le loro vite. Lo dimentico in una settimana.", s: 1, g: 4 },
+      { text: "Mando un secondo messaggio. Ironico. Dentro di me sento che potrei anche mandarne un terzo, per correggere il secondo. E così all'infinito.", s: 3, g: 2 },
+      { text: "Lo archivio mentalmente: è una persona poco affidabile (o immatura o vigliacca). A ogni modo, adieu.", s: 2, g: 3 },
+    ]
+  },
+  {
+    title: "D2 — Figura in riunione",
+    text: "Sei in una riunione. Dici una cosa. Silenzio totale. Qualcuno cambia argomento.",
+    options: [
+      { text: "Sorrido come se avessi detto quella cosa apposta, per testare il gruppo.", s: 1, g: 4 },
+      { text: "Ripeto la stessa cosa più forte. Per completezza.", s: 3, g: 2 },
+      { text: "Mentalmente me ne vado. Fisicamente resto altri quarantacinque minuti.", s: 4, g: 1 },
+      { text: "Prendo nota. Il prossimo intervento lo preparo con tre slide di backup.", s: 2, g: 3 },
+    ]
+  },
+  {
+    title: "D3 — Incontro con ex",
+    text: "Incontri per strada qualcuno con cui hai avuto una storia finita male. Siete a tre metri.",
+    options: [
+      { text: "Guardo il telefono con l'intensità di chi sta salvando vite umane.", s: 3, g: 2 },
+      { text: "Saluto. È adulto. È finita. Avanti.", s: 1, g: 4 },
+      { text: "Cambio marciapiede con una disinvoltura che mi sento orgoglioso/a di aver eseguito.", s: 2, g: 3 },
+      { text: "Ci incrociamo. Diciamo entrambi 'ciao' nello stesso momento. Poi acceleriamo.", s: 4, g: 1 },
+    ]
+  },
+  {
+    title: "D4 — Cena forzata",
+    text: "Sei a cena — aziendale, di classe, condominiale. Accanto a te qualcuno che rivedrai — un collega, il genitore di un compagno di classe di tuo figlio — tira fuori idee politiche o sociali che trovi inaccettabili. Non puoi litigare apertamente. Cosa fai?",
+    options: [
+      { text: "Annuisco vagamente. Cambio argomento appena posso. Non vale la pena.", s: 2, g: 2 },
+      { text: "Ascolto in silenzio e accumulo. A casa sfogo con il mio partner o da solo, in un monologo interiore di mezz'ora.", s: 3, g: 3 },
+      { text: "Trovo un terreno neutro e ci sposto la conversazione. Non cedo, non combatto. Sopravvivo.", s: 1, g: 4 },
+      { text: "A un certo punto dico la mia, con tatto ma con chiarezza. Destabilizza. Costa. Ma non riesco a fare altrimenti.", s: 4, g: 1 },
+    ]
+  },
+  {
+    title: "D5 — Figuraccia",
+    text: "Hai fatto una figura imbarazzante in pubblico (una caduta rovinosa, il prezzemolo fra i denti per 15 minuti, un'enorme macchia di dentifricio sulla maglietta). La prima cosa che pensi è:",
+    options: [
+      { text: '"Questa diventerà una storia divertente."', s: 1, g: 4 },
+      { text: '"Spero che nessuno abbia visto."', s: 2, g: 2 },
+      { text: '"Sto ancora pensando a quella volta analoga di tre anni fa."', s: 4, g: 1 },
+      { text: '"Ok, conta: quante persone erano presenti? Qual è il rischio di diffusione?"', s: 3, g: 2 },
+    ]
+  },
+  {
+    title: "D6 — Critica giusta",
+    text: "Qualcuno ti fa una critica che, in fondo, sai essere giusta. Come reagisci?",
+    options: [
+      { text: "La accolgo. Ci lavoro. Ringrazio internamente anche se fuori non lo dico.", s: 1, g: 4 },
+      { text: "La accolgo, la rimugino, poi mi convinco che la persona aveva secondi fini.", s: 4, g: 1 },
+      { text: "Annuisco. Dico \"hai ragione\". E poi non cambio nulla per dispetto.", s: 3, g: 2 },
+      { text: "La accolgo e la trasformo in un piano d'azione. Forse esagerato. Ma almeno faccio qualcosa.", s: 2, g: 3 },
+    ]
+  },
+  {
+    title: "D7 — Cassa",
+    text: "Sei alla cassa. Spesa da 150 euro, già imbustata. La carta non passa. Il cassiere riprova. Provi a contare i contanti ma non bastano. Provi un'altra carta. Non passa ugualmente. La fila dietro di te borbotta. Quei trenta secondi di attesa: come li vivi?",
+    options: [
+      { text: "Fisso il display della cassa come se contenesse informazioni importantissime.", s: 2, g: 2 },
+      { text: "Sorrido al cassiere, faccio una battuta, trasformo quei secondi in una microperformance sociale.", s: 3, g: 3 },
+      { text: "Non me ne preoccupo. Può capitare a tutti. Che aspettino un po'.", s: 1, g: 4 },
+      { text: "Mi scuso con la fila. Almeno due volte. Accenno anche a un inchino in stile orientale. Me ne ricorderò per tutto il viaggio di ritorno a casa.", s: 4, g: 1 },
+    ]
+  },
+  {
+    title: "D8 — Fine giornata storta",
+    text: "Alla fine di una giornata storta, ti siedi. Cosa fai con tutto quello che è andato male?",
+    options: [
+      { text: "Lo processo brevemente e lo chiudo. Non serve portarselo a letto.", s: 1, g: 4 },
+      { text: "Lo racconto a qualcuno con abbastanza ironia da sembrare che stia bene.", s: 2, g: 3 },
+      { text: "Lo scrivo. Lo ordino. Lo archivio.", s: 3, g: 3 },
+      { text: "Lo lascio lì, vivo, a girare dentro finché non mi addormento.", s: 4, g: 1 },
+    ]
+  }
+];
+
+const profiles = {
+  androide: {
+    title: "L'<em>Androide</em>",
+    emoji: "🤖",
+    desc: "Il disagio ti sfiora ma non ti attraversa. Hai una capacità quasi inquietante di leggere il contesto, trovare la mossa giusta e andare avanti — senza che niente sembri costarti davvero.",
+    detail: "Non è cinismo e probabilmente non è nemmeno insensibilità. È una forma di efficienza emotiva che agli altri appare come distacco. Il disagio esiste, ma non governa le tue decisioni. Questo ti rende affidabile nelle crisi e leggermente incomprensibile nelle conversazioni emotive.",
+    traits: ["regolazione emotiva alta", "adattamento rapido", "bassa ruminazione", "lettura del contesto"],
+    sPct: 15, gPct: 90
+  },
+  struzzo: {
+    title: "Lo <em>Struzzo</em>",
+    emoji: "🦤",
+    desc: "Il disagio? Non pervenuto. O almeno, così sembra. Tendi a minimizzare, a cambiare argomento, ad aspettare che le cose si risolvano da sole. A volte funziona. A volte no.",
+    detail: "Non è che non senti nulla — è che hai sviluppato un istinto potente verso l'evitamento. Finché il disagio non ti ostacola direttamente, la tua strategia di default è ignorarlo. Il problema è che il disagio ignorato tende ad accumularsi, e quando esplode, lo fa nel momento meno opportuno.",
+    traits: ["evitamento attivo", "bassa soglia di attivazione", "gestione posticipata", "pragmatismo difensivo"],
+    sPct: 20, gPct: 20
+  },
+  alchimista: {
+    title: "L'<em>Alchimista</em>",
+    emoji: "⚗️",
+    desc: "Senti tutto. Il disagio ti arriva in ogni sua sfumatura — l'imbarazzo, il conflitto, il giudizio altrui. Ma invece di subirlo, lo usi. Lo trasformi in qualcosa: una storia, una battuta, una mossa strategica.",
+    detail: "Non è che stai bene nel disagio — è che hai imparato a lavorarci dentro. L'alchimia emotiva che pratichi ti permette di essere presente nelle situazioni difficili senza esserne travolto. Costa energie, però. E a volte ti chiedi quanto di quello che mostri corrisponda davvero a quello che senti.",
+    traits: ["alta sensibilità", "trasformazione attiva", "ironia come risorsa", "intelligenza situazionale"],
+    sPct: 85, gPct: 80
+  },
+  ruminatore: {
+    title: "Il <em>Ruminatore</em>",
+    emoji: "🌀",
+    desc: "Il disagio ti abita. Lo senti in tempo reale e poi te lo porti a casa, a letto, nella doccia del giorno dopo. Non dimentichi facilmente. Non scordi le figure, i silenzi, le parole che avresti voluto dire.",
+    detail: "Quella che sembra una fragilità è anche la tua risorsa principale: senti le cose profondamente, il che ti rende capace di empatia reale, di relazioni non superficiali, di una comprensione del mondo che a chi sente meno è preclusa. Il problema non è che rimugini — è che a volte non sai quando smettere.",
+    traits: ["alta sensibilità", "ruminazione intensa", "empatia profonda", "memoria emotiva lunga"],
+    sPct: 90, gPct: 15
+  }
+};
+
+let current = 0;
+let answers = new Array(8).fill(null);
+
+function startQuiz() {
+  document.getElementById('introSection').classList.add('hide');
+  document.getElementById('quizSection').classList.add('show');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[current];
+  const wrap = document.getElementById('questionWrap');
+  const letters = ['A', 'B', 'C', 'D'];
+
+  wrap.innerHTML = `
+    <div class="card">
+      <div class="question-number">${q.title}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option ${answers[current] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${opt.text}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  const pct = (current / 8) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${current + 1} / 8`;
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = answers[current] === null;
+  document.getElementById('nextBtn').textContent = current === 7 ? 'vedi risultato →' : 'avanti →';
+}
+
+function selectOption(idx) {
+  answers[current] = idx;
+  renderQuestion();
+}
+
+function nextQuestion() {
+  if (current < 7) { current++; renderQuestion(); }
+  else showResult();
+}
+
+function prevQuestion() {
+  if (current > 0) { current--; renderQuestion(); }
+}
+
+function showResult() {
+  let totalS = 0, totalG = 0;
+  answers.forEach((ansIdx, qIdx) => {
+    if (ansIdx === null) return;
+    totalS += questions[qIdx].options[ansIdx].s;
+    totalG += questions[qIdx].options[ansIdx].g;
+  });
+  const avgS = totalS / 8;
+  const avgG = totalG / 8;
+
+  const sentemolto  = avgS >= 2.5;
+  const gestiscebene = avgG >= 2.5;
+
+  let key;
+  if (!sentemolto &&  gestiscebene) key = 'androide';
+  if (!sentemolto && !gestiscebene) key = 'struzzo';
+  if ( sentemolto &&  gestiscebene) key = 'alchimista';
+  if ( sentemolto && !gestiscebene) key = 'ruminatore';
+
+  const p = profiles[key];
+
+  document.getElementById('quizSection').classList.remove('show');
+  document.getElementById('resultSection').classList.add('show');
+
+  document.getElementById('resultTitle').innerHTML = p.title;
+  document.getElementById('resultEmoji').textContent = p.emoji;
+  document.getElementById('resultDesc').textContent = p.desc;
+  document.getElementById('resultDetail').textContent = p.detail;
+  document.getElementById('resultTraits').innerHTML = p.traits.map(t => `<span class="trait">${t}</span>`).join('');
+
+  setTimeout(() => {
+    document.getElementById('axisFillS').style.width = p.sPct + '%';
+    document.getElementById('axisFillG').style.width = p.gPct + '%';
+  }, 100);
+}
+
+function restart() {
+  current = 0;
+  answers = new Array(8).fill(null);
+  document.getElementById('resultSection').classList.remove('show');
+  document.getElementById('quizSection').classList.add('show');
+  renderQuestion();
+}
+</script>
+</body>
+</html>

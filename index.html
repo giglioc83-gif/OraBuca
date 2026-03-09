@@ -291,6 +291,46 @@
 
   .restart-wrap { text-align: center; padding-top: 1rem; }
 
+  .share-wrap {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--sand);
+  }
+
+  .share-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+
+  .share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .btn-share {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--sand);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-share:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-share.copied { border-color: var(--rust); color: var(--rust); }
+
   .quiz-section { display: none; }
   .quiz-section.show { display: block; }
   .intro-section { display: block; }
@@ -352,6 +392,15 @@
       <p class="result-desc" id="resultDesc"></p>
       <p class="result-detail" id="resultDetail"></p>
       <div class="result-traits" id="resultTraits"></div>
+    </div>
+    <div class="share-wrap">
+      <div class="share-label">condividi il tuo profilo</div>
+      <div class="share-buttons">
+        <a id="btnFacebook" class="btn-share" target="_blank" rel="noopener">Facebook</a>
+        <a id="btnLinkedin" class="btn-share" target="_blank" rel="noopener">LinkedIn</a>
+        <button class="btn-share" onclick="copyForSocial()">Instagram & Substack</button>
+        <button class="btn-share" id="btnCopyLink" onclick="copyLink()">Copia link</button>
+      </div>
     </div>
     <div class="restart-wrap">
       <button class="btn" onclick="restart()">ricomincia da capo</button>
@@ -567,6 +616,41 @@ function showResult() {
     document.getElementById('axisFillS').style.width = p.sPct + '%';
     document.getElementById('axisFillG').style.width = p.gPct + '%';
   }, 100);
+
+  // Imposta link di condivisione
+  const siteUrl = window.location.href.split('?')[0];
+  const profileName = key.charAt(0).toUpperCase() + key.slice(1);
+  const shareText = `Sono ${profileName === 'Androide' || profileName === 'Alchimista' ? "un" : profileName === 'Struzzo' ? "uno" : "un"} ${profileName}. Scopri anche tu il tuo profilo del disagio → ${siteUrl}`;
+
+  document.getElementById('btnFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`;
+  document.getElementById('btnLinkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`;
+
+  window._shareText = shareText;
+  window._shareUrl = siteUrl;
+}
+
+function copyForSocial() {
+  const btn = event.target;
+  navigator.clipboard.writeText(window._shareText).then(() => {
+    btn.textContent = 'Copiato!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Instagram & Substack';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function copyLink() {
+  const btn = document.getElementById('btnCopyLink');
+  navigator.clipboard.writeText(window._shareUrl).then(() => {
+    btn.textContent = 'Copiato!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copia link';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
 }
 
 function restart() {

@@ -410,9 +410,6 @@
 </div>
 
 <script>
-// s = sensibilità (1 sente poco → 4 sente molto)
-// g = gestione   (1 gestisce male → 4 gestisce bene)
-
 const questions = [
   {
     title: "D1 — Messaggio ignorato",
@@ -439,9 +436,9 @@ const questions = [
     text: "Incontri per strada qualcuno con cui hai avuto una storia finita male. Siete a tre metri.",
     options: [
       { text: "Guardo il telefono con l'intensità di chi sta salvando vite umane.", s: 3, g: 2 },
-      { text: "Saluto. È adulto. È finita. Avanti.", s: 1, g: 4 },
-      { text: "Cambio marciapiede con una disinvoltura che mi sento orgoglioso/a di aver eseguito.", s: 2, g: 3 },
-      { text: "Ci incrociamo. Diciamo entrambi 'ciao' nello stesso momento. Poi acceleriamo.", s: 4, g: 1 },
+      { text: "Saluto: siamo adulti, è finita da tempo.", s: 1, g: 4 },
+      { text: "Cambio marciapiede con aria sciolta e dinoccolata, compiacendomi della prontezza delle mie articolazioni.", s: 2, g: 3 },
+      { text: "Abbozzo un \"ciao\" a mezza voce, muovo in maniera scomposta una mano e corro a casa a dirlo al gatto o al mio chatbot di fiducia.", s: 4, g: 1 },
     ]
   },
   {
@@ -451,7 +448,7 @@ const questions = [
       { text: "Annuisco vagamente e mi estraneo mentalmente. Non vale la pena rispondere.", s: 2, g: 2 },
       { text: "Ascolto in silenzio e accumulo. A casa sfogo con il mio partner o da solo, in un monologo interiore di mezz'ora.", s: 3, g: 3 },
       { text: "Trovo un terreno neutro e sposto la conversazione su quello.", s: 1, g: 4 },
-      { text: "A un certo punto dico la mia, con tatto ma con chiarezza. L'interlocutore non si aspettava un constraddittorio in quel contesto e cambia argomento.", s: 4, g: 1 },
+      { text: "A un certo punto dico la mia, con tatto ma con chiarezza. L'interlocutore non si aspettava un contraddittorio in quel contesto e cambia argomento.", s: 4, g: 1 },
     ]
   },
   {
@@ -465,13 +462,13 @@ const questions = [
     ]
   },
   {
-    title: "D6 — Critica giusta",
-    text: "Qualcuno ti fa una critica che, in fondo, sai essere giusta. Come reagisci?",
+    title: "D6 — Critica velata",
+    text: "Qualcuno che conosci bene ti guarda e dice: \"Ti vedo un po' sbattuto/a.\" Pausa. Nient'altro. Come reagisci?",
     options: [
-      { text: "La accolgo. Ci lavoro. Ringrazio internamente anche se fuori non lo dico.", s: 1, g: 4 },
-      { text: "La accolgo, la rimugino, poi mi convinco che la persona aveva secondi fini.", s: 4, g: 1 },
-      { text: "Annuisco. Dico \"hai ragione\". E poi non cambio nulla per dispetto.", s: 3, g: 2 },
-      { text: "La accolgo e la trasformo in un piano d'azione. Forse esagerato. Ma almeno faccio qualcosa.", s: 2, g: 3 },
+      { text: "Sorrido. \"Sì, periodo intenso.\" Mi segno mentalmente di fare un check del mio stato psicofisico nei prossimi giorni.", s: 1, g: 4 },
+      { text: "Ci penso per il resto della giornata. Cosa voleva dire esattamente? Era una critica? Perché l'ha detto? E comunque mi sa che ha ragione. Si vede che sono a pezzi.", s: 4, g: 1 },
+      { text: "Rispondo con una battuta. Sdrammatizzo e rilancio con ironia. Poi corro in bagno a guardarmi allo specchio.", s: 3, g: 3 },
+      { text: "Annuisco e cambio argomento velocemente.", s: 2, g: 2 },
     ]
   },
   {
@@ -490,7 +487,7 @@ const questions = [
     options: [
       { text: "Lo processo brevemente e lo chiudo. Non serve portarselo a letto.", s: 1, g: 4 },
       { text: "Lo racconto a qualcuno con abbastanza ironia da sembrare che stia bene.", s: 2, g: 3 },
-      { text: "Lo scrivo. Lo ordino. Lo archivio.", s: 3, g: 3 },
+      { text: "Cerco di distrarmi in ogni modo possibile per non ripensarci.", s: 2, g: 2 },
       { text: "Lo lascio lì, vivo, a girare dentro finché non mi addormento.", s: 4, g: 1 },
     ]
   }
@@ -498,34 +495,34 @@ const questions = [
 
 const profiles = {
   androide: {
-    title: "L'<em>Androide</em>",
+    title: "l'<em>androide</em>",
     emoji: "🤖",
-    desc: "Il disagio ti sfiora ma non ti attraversa. Hai una capacità quasi inquietante di leggere il contesto, trovare la mossa giusta e andare avanti — senza che niente sembri costarti davvero.",
-    detail: "Non è cinismo e probabilmente non è nemmeno insensibilità. È una forma di efficienza emotiva che agli altri appare come distacco. Il disagio esiste, ma non governa le tue decisioni. Questo ti rende affidabile nelle crisi e leggermente incomprensibile nelle conversazioni emotive.",
+    desc: "Il disagio ti sfiora ma non ti attraversa, e questa è una cosa che gli altri notano prima ancora che tu te ne renda conto. Hai una capacità quasi inquietante di leggere il contesto, trovare la mossa giusta e andare avanti senza che niente sembri costarti davvero.",
+    detail: "Non è cinismo e probabilmente non è nemmeno insensibilità: è una forma di efficienza emotiva che agli altri appare come distacco, e che ti rende affidabile nelle crisi quanto incomprensibile nelle conversazioni in cui qualcuno si aspetta che tu ti perda un po'. Il disagio esiste, nella tua vita. Semplicemente, non governa nulla.",
     traits: ["regolazione emotiva alta", "adattamento rapido", "bassa ruminazione", "lettura del contesto"],
     sPct: 15, gPct: 90
   },
   struzzo: {
-    title: "Lo <em>Struzzo</em>",
+    title: "lo <em>struzzo</em>",
     emoji: "🦤",
-    desc: "Il disagio? Non pervenuto. O almeno, così sembra. Tendi a minimizzare, a cambiare argomento, ad aspettare che le cose si risolvano da sole. A volte funziona. A volte no.",
-    detail: "Non è che non senti nulla — è che hai sviluppato un istinto potente verso l'evitamento. Finché il disagio non ti ostacola direttamente, la tua strategia di default è ignorarlo. Il problema è che il disagio ignorato tende ad accumularsi, e quando esplode, lo fa nel momento meno opportuno.",
+    desc: "La tua strategia del disagio è una delle più antiche del mondo: non vederlo. Non per stupidità o superficialità, ma perché hai sviluppato nel tempo un istinto potente verso l'evitamento, una specie di riflesso automatico che scatta prima ancora che tu abbia deciso di usarlo.",
+    detail: "Cambi argomento, minimizzi, aspetti che le cose si sistemino da sole. A volte funziona davvero. Il problema è che il disagio ignorato non scompare: si accumula in qualche posto che non controlli, e quando trova un'uscita la trova nel momento meno opportuno e con un'intensità che non ti aspettavi.",
     traits: ["evitamento attivo", "bassa soglia di attivazione", "gestione posticipata", "pragmatismo difensivo"],
     sPct: 20, gPct: 20
   },
   alchimista: {
-    title: "L'<em>Alchimista</em>",
+    title: "l'<em>alchimista</em>",
     emoji: "⚗️",
-    desc: "Senti tutto. Il disagio ti arriva in ogni sua sfumatura — l'imbarazzo, il conflitto, il giudizio altrui. Ma invece di subirlo, lo usi. Lo trasformi in qualcosa: una storia, una battuta, una mossa strategica.",
-    detail: "Non è che stai bene nel disagio — è che hai imparato a lavorarci dentro. L'alchimia emotiva che pratichi ti permette di essere presente nelle situazioni difficili senza esserne travolto. Costa energie, però. E a volte ti chiedi quanto di quello che mostri corrisponda davvero a quello che senti.",
+    desc: "Senti tutto, e non è un modo di dire. Il disagio ti arriva in ogni sua sfumatura, l'imbarazzo, il conflitto, il giudizio altrui, la situazione che non torna. Ma invece di subirlo, hai imparato a usarlo: lo trasformi in una storia, in una battuta, in una mossa che sposta l'asse della conversazione esattamente dove vuoi tu.",
+    detail: "Non è che stai bene nel disagio, è che ci lavori dentro con una competenza che a molti sembra naturale e che invece ti costa molto più di quanto tu mostri. A volte ti chiedi se quello che fai vedere corrisponda davvero a quello che senti. Di solito la risposta è no, almeno in parte. E questa è forse la cosa più alchemica di tutte.",
     traits: ["alta sensibilità", "trasformazione attiva", "ironia come risorsa", "intelligenza situazionale"],
     sPct: 85, gPct: 80
   },
   ruminatore: {
-    title: "Il <em>Ruminatore</em>",
+    title: "il <em>ruminatore</em>",
     emoji: "🌀",
-    desc: "Il disagio ti abita. Lo senti in tempo reale e poi te lo porti a casa, a letto, nella doccia del giorno dopo. Non dimentichi facilmente. Non scordi le figure, i silenzi, le parole che avresti voluto dire.",
-    detail: "Quella che sembra una fragilità è anche la tua risorsa principale: senti le cose profondamente, il che ti rende capace di empatia reale, di relazioni non superficiali, di una comprensione del mondo che a chi sente meno è preclusa. Il problema non è che rimugini — è che a volte non sai quando smettere.",
+    desc: "Il disagio ti abita, e non solo nel momento in cui succede. Te lo porti a casa, a letto, nella doccia del giorno dopo, in quella mezz'ora di silenzio in cui gli altri pensano ad altro e tu stai ancora ripercorrendo la scena per capire se potevi fare diversamente.",
+    detail: "Non dimentichi facilmente le figure, i silenzi, le parole che avresti voluto dire e non hai detto. Quello che sembra un peso, però, è anche la tua risorsa più vera: senti le cose in profondità, il che ti rende capace di un'empatia che non è performance ma contatto reale, di relazioni che non restano in superficie, di una comprensione del mondo che a chi sente meno semplicemente non è accessibile. Il problema non è che rimugini; è che a volte non sai quando è il momento di smettere.",
     traits: ["alta sensibilità", "ruminazione intensa", "empatia profonda", "memoria emotiva lunga"],
     sPct: 90, gPct: 15
   }
@@ -592,7 +589,7 @@ function showResult() {
   const avgS = totalS / 8;
   const avgG = totalG / 8;
 
-  const sentemolto  = avgS >= 2.5;
+  const sentemolto   = avgS >= 2.5;
   const gestiscebene = avgG >= 2.5;
 
   let key;
@@ -617,10 +614,9 @@ function showResult() {
     document.getElementById('axisFillG').style.width = p.gPct + '%';
   }, 100);
 
-  // Imposta link di condivisione
   const siteUrl = window.location.href.split('?')[0];
-  const profileName = key.charAt(0).toUpperCase() + key.slice(1);
-  const shareText = `Sono ${profileName === 'Androide' || profileName === 'Alchimista' ? "un" : profileName === 'Struzzo' ? "uno" : "un"} ${profileName}. Scopri anche tu il tuo profilo del disagio → ${siteUrl}`;
+  const articleMap = { androide: 'un androide', struzzo: 'uno struzzo', alchimista: 'un alchimista', ruminatore: 'un ruminatore' };
+  const shareText = `Sono ${articleMap[key]}. Scopri anche tu il tuo profilo del disagio → ${siteUrl}`;
 
   document.getElementById('btnFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteUrl)}`;
   document.getElementById('btnLinkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(siteUrl)}`;

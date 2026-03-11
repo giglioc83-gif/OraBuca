@@ -18,6 +18,31 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--sand);
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .topbar a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .topbar a:hover { color: var(--rust); }
+
   body {
     background-color: var(--cream);
     color: var(--ink);
@@ -26,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1rem;
+    padding: 4rem 1rem 2rem;
   }
 
   body::before {
@@ -307,6 +332,78 @@
 
   .restart-wrap { text-align: center; padding-top: 1rem; }
 
+  .all-profiles-wrap {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--sand);
+  }
+
+  .all-profiles-title {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    text-align: center;
+  }
+
+  .profiles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 500px) {
+    .profiles-grid { grid-template-columns: 1fr; }
+  }
+
+  .profile-card {
+    background: var(--cream);
+    border: 1px solid var(--sand);
+    padding: 1.2rem;
+  }
+
+  .profile-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .profile-card-emoji { font-size: 1.4rem; }
+
+  .profile-card-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .profile-card-desc {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .btn-show-profiles {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--sand);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+  }
+
+  .btn-show-profiles:hover { border-color: var(--ink); color: var(--ink); }
+
   .share-wrap {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
@@ -355,6 +452,10 @@
 </style>
 </head>
 <body>
+<div class="topbar">
+  <a href="https://orabuca.substack.com" target="_blank" rel="noopener">← torna a OraBuca</a>
+</div>
+
 <div class="container">
 
   <div class="intro-section" id="introSection">
@@ -422,7 +523,41 @@
       </div>
     </div>
     <div class="restart-wrap">
-      <button class="btn" onclick="restart()">ricomincia da capo</button>
+      <button class="btn" onclick="restart()">ricomincia da capo</button><br>
+      <button class="btn-show-profiles" onclick="toggleProfiles()">consulta tutti i profili ↓</button>
+    </div>
+    <div class="all-profiles-wrap" id="allProfiles" style="display:none">
+      <div class="all-profiles-title">tutti i profili</div>
+      <div class="profiles-grid">
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <span class="profile-card-emoji">🤖</span>
+            <span class="profile-card-name">l'androide</span>
+          </div>
+          <p class="profile-card-desc">Il disagio ti sfiora ma non ti attraversa. Hai una capacità quasi inquietante di leggere il contesto, trovare la mossa giusta e andare avanti senza che niente sembri costarti davvero. Questo ti rende affidabile nelle crisi e leggermente incomprensibile nelle conversazioni emotive.</p>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <span class="profile-card-emoji">🦤</span>
+            <span class="profile-card-name">lo struzzo</span>
+          </div>
+          <p class="profile-card-desc">La tua strategia del disagio è una delle più antiche del mondo: non vederlo. Cambi argomento, minimizzi, aspetti che le cose si sistemino da sole. A volte funziona. Il problema è che il disagio ignorato non scompare: si accumula, e quando trova un'uscita la trova nel momento meno opportuno.</p>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <span class="profile-card-emoji">⚗️</span>
+            <span class="profile-card-name">l'alchimista</span>
+          </div>
+          <p class="profile-card-desc">Senti tutto, e non è un modo di dire. Ma invece di subirlo, hai imparato a usarlo: lo trasformi in una storia, in una battuta, in una mossa che sposta l'asse della conversazione dove vuoi tu. Non è che stai bene nel disagio — è che ci lavori dentro, con una competenza che a molti sembra naturale.</p>
+        </div>
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <span class="profile-card-emoji">🌀</span>
+            <span class="profile-card-name">il ruminatore</span>
+          </div>
+          <p class="profile-card-desc">Il disagio ti abita, e non solo nel momento in cui succede. Te lo porti a casa, a letto, nella doccia del giorno dopo. Non dimentichi facilmente le figure, i silenzi, le parole che avresti voluto dire. Quello che sembra un peso è anche la tua risorsa più vera: senti le cose in profondità.</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -436,27 +571,27 @@ const questions = [
     options: [
       { text: "Rileggo il messaggio ogni due ore per capire dove ho sbagliato.", s: 4, g: 1 },
       { text: "Lo accetto. Le persone hanno le loro vite. Lo dimentico in una settimana.", s: 1, g: 4 },
-      { text: "Mando un secondo messaggio ironico. Dentro di me sento che potrei anche mandarne un terzo, per correggere il secondo. E così all'infinito.", s: 3, g: 2 },
-      { text: "Lo archivio mentalmente: è una persona poco affidabile (o immatura o vigliacca). A ogni modo, adieu.", s: 2, g: 3 },
+      { text: "Mando un secondo messaggio ironico. Dentro di me sento che potrei anche mandarne un terzo, per correggere il secondo. Ma mi freno.", s: 3, g: 2 },
+      { text: "Cerco di dimenticarmene. Lo blocco, cancello il numero.", s: 2, g: 2 },
     ]
   },
   {
     title: "D2 — Figura in riunione",
     text: "Durante una riunione fai un breve intervento per dire la tua. Silenzio totale. Qualcuno si guarda con aria perplessa e cambia argomento.",
     options: [
-      { text: "Sorrido come se avessi detto quella cosa apposta, per testare il gruppo.", s: 1, g: 4 },
-      { text: "Ripeto la stessa cosa più forte. Per completezza.", s: 3, g: 2 },
-      { text: "Mentalmente me ne vado. Fisicamente resto altri quarantacinque minuti.", s: 4, g: 1 },
-      { text: "Prendo nota. Il prossimo intervento lo preparo con tre slide di backup.", s: 2, g: 3 },
+      { text: "Sorrido come se avessi detto quella cosa apposta, per testare il gruppo.", s: 3, g: 2 },
+      { text: "Mi faccio invadere da un malessere intenso e continuo a ripensare in loop a quella scena per giorni e giorni.", s: 4, g: 1 },
+      { text: "Mentalmente me ne vado. Fisicamente resto altri quarantacinque minuti.", s: 2, g: 2 },
+      { text: "Prendo nota. Il prossimo intervento lo preparo con tre slide di backup.", s: 1, g: 4 },
     ]
   },
   {
     title: "D3 — Incontro con ex",
     text: "Incontri per strada qualcuno con cui hai avuto una storia finita male. Siete a tre metri.",
     options: [
-      { text: "Guardo il telefono con l'intensità di chi sta salvando vite umane.", s: 3, g: 2 },
+      { text: "Guardo il telefono con l'intensità di chi sta leggendo le istruzioni per salvare il pianeta.", s: 2, g: 2 },
       { text: "Saluto: siamo adulti, è finita da tempo.", s: 1, g: 4 },
-      { text: "Cambio marciapiede con aria sciolta e dinoccolata, compiacendomi della prontezza delle mie articolazioni.", s: 2, g: 3 },
+      { text: "Cambio marciapiede con aria sciolta e dinoccolata, compiacendomi della prontezza delle mie articolazioni.", s: 3, g: 2 },
       { text: "Abbozzo un \"ciao\" a mezza voce, muovo in maniera scomposta una mano e corro a casa a dirlo al gatto o al mio chatbot di fiducia.", s: 4, g: 1 },
     ]
   },
@@ -464,20 +599,20 @@ const questions = [
     title: "D4 — Cena forzata",
     text: "Sei a cena fuori. Accanto a te qualcuno (un collega, un parente, il genitore di un compagno di classe di tuo figlio) tira fuori idee politiche che trovi inaccettabili. Non puoi litigare apertamente. Cosa fai?",
     options: [
-      { text: "Annuisco vagamente e mi estraneo mentalmente. Non vale la pena rispondere.", s: 2, g: 2 },
-      { text: "Ascolto in silenzio e accumulo. A casa sfogo con il mio partner o da solo, in un monologo interiore di mezz'ora.", s: 3, g: 3 },
+      { text: "Annuisco e mi estraneo mentalmente. Non vale la pena rispondere.", s: 2, g: 2 },
+      { text: "Ascolto in silenzio e accumulo. A casa sfogo con il mio partner o da solo, in un monologo interiore di mezz'ora.", s: 4, g: 1 },
       { text: "Trovo un terreno neutro e sposto la conversazione su quello.", s: 1, g: 4 },
-      { text: "A un certo punto dico la mia, con tatto ma con chiarezza. L'interlocutore non si aspettava un contraddittorio in quel contesto e cambia argomento.", s: 4, g: 1 },
+      { text: "A un certo punto dico la mia, con tatto ma con chiarezza. L'interlocutore non si aspettava un contraddittorio in quel contesto e cambia argomento.", s: 3, g: 2 },
     ]
   },
   {
     title: "D5 — Figuraccia",
     text: "Hai fatto una figura imbarazzante in pubblico (una caduta rovinosa, il prezzemolo fra i denti per 15 minuti, un'enorme macchia di dentifricio sulla maglietta). La prima cosa che pensi è:",
     options: [
-      { text: '"Questa diventerà una storia divertente."', s: 1, g: 4 },
+      { text: '"Questa diventerà una storia divertente."', s: 3, g: 2 },
       { text: '"Spero che nessuno abbia visto."', s: 2, g: 2 },
       { text: '"Sto ancora pensando a quella volta analoga di tre anni fa."', s: 4, g: 1 },
-      { text: '"Ok, conta: quante persone erano presenti? Qual è il rischio di diffusione?"', s: 3, g: 2 },
+      { text: '"Ok, conta: quante persone erano presenti? Qual è il rischio di diffusione?"', s: 1, g: 4 },
     ]
   },
   {
@@ -486,7 +621,7 @@ const questions = [
     options: [
       { text: "Sorrido. \"Sì, periodo intenso.\" Mi segno mentalmente di fare un check del mio stato psicofisico nei prossimi giorni.", s: 1, g: 4 },
       { text: "Ci penso per il resto della giornata. Cosa voleva dire esattamente? Era una critica? Perché l'ha detto? E comunque mi sa che ha ragione. Si vede che sono a pezzi.", s: 4, g: 1 },
-      { text: "Rispondo con una battuta. Sdrammatizzo e rilancio con ironia. Poi corro in bagno a guardarmi allo specchio.", s: 3, g: 3 },
+      { text: "Rispondo con una battuta. Sdrammatizzo e rilancio con ironia. Poi corro in bagno a guardarmi allo specchio.", s: 3, g: 2 },
       { text: "Annuisco e cambio argomento velocemente.", s: 2, g: 2 },
     ]
   },
@@ -494,10 +629,10 @@ const questions = [
     title: "D7 — Cassa",
     text: "Sei alla cassa. Spesa da 150 euro, già imbustata. La carta non passa. Il cassiere riprova. Provi a contare i contanti ma non bastano. Provi un'altra carta. Non passa ugualmente. La fila dietro di te borbotta. Quei trenta secondi di attesa: come li vivi?",
     options: [
-      { text: "Fisso il display della cassa come se contenesse informazioni importantissime.", s: 2, g: 2 },
-      { text: "Sorrido al cassiere, faccio una battuta, trasformo quei secondi in una microperformance sociale.", s: 3, g: 3 },
-      { text: "Non me ne preoccupo. Può capitare a tutti. Che aspettino un po'.", s: 1, g: 4 },
-      { text: "Mi scuso con la fila. Almeno due volte. Accenno anche a un inchino in stile orientale. Me ne ricorderò per tutto il viaggio di ritorno a casa.", s: 4, g: 1 },
+      { text: "Mi congelo fissando il display della cassa, in attesa di un miracolo.", s: 2, g: 2 },
+      { text: "Sorrido al cassiere e inveisco bonariamente contro la tecnologia, l'inflazione, i poteri forti.", s: 3, g: 3 },
+      { text: "Non mi preoccupo delle persone in fila, ma cerco di capire quali mosse fare per uscire dall'impasse.", s: 1, g: 4 },
+      { text: "Mi scuso con la fila almeno due volte. Accenno anche a un inchino in stile orientale. Me ne ricorderò per tutto il viaggio di ritorno a casa.", s: 4, g: 1 },
     ]
   },
   {
@@ -505,8 +640,8 @@ const questions = [
     text: "Alla fine di una giornata storta, ti siedi. Cosa fai con tutto quello che è andato male?",
     options: [
       { text: "Lo processo brevemente e lo chiudo. Non serve portarselo a letto.", s: 1, g: 4 },
-      { text: "Lo racconto a qualcuno con abbastanza ironia da sembrare che stia bene.", s: 2, g: 3 },
-      { text: "Cerco di distrarmi in ogni modo possibile per non ripensarci.", s: 2, g: 2 },
+      { text: "Lo racconto a qualcuno di fidato per scaricare la tensione e creare almeno un momento positivo in una giornata pessima.", s: 3, g: 3 },
+      { text: "Cerco di distrarmi il più possibile per non ripensarci.", s: 2, g: 2 },
       { text: "Lo lascio lì, vivo, a girare dentro finché non mi addormento.", s: 4, g: 1 },
     ]
   }
@@ -667,6 +802,18 @@ function copyLink() {
       btn.classList.remove('copied');
     }, 2000);
   });
+}
+
+function toggleProfiles() {
+  const el = document.getElementById('allProfiles');
+  const btn = event.target;
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    btn.textContent = 'chiudi profili ↑';
+  } else {
+    el.style.display = 'none';
+    btn.textContent = 'consulta tutti i profili ↓';
+  }
 }
 
 function restart() {

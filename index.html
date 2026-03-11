@@ -221,6 +221,7 @@
     font-size: clamp(2rem, 5vw, 3rem);
     line-height: 1.1;
     margin-bottom: 0.5rem;
+    display: none;
   }
 
   .result-type em { font-style: italic; color: var(--rust); }
@@ -257,7 +258,22 @@
     margin-bottom: 1.5rem;
   }
 
-  .result-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+  .result-emoji-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .result-emoji { font-size: 2rem; }
+
+  .result-profile-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
 
   .result-desc {
     font-family: 'Instrument Serif', serif;
@@ -347,7 +363,7 @@
       <h1>Il Test<br>del <em>Disagio</em></h1>
       <p class="subtitle">
         L'imbarazzo, per sé e per gli altri. Ma anche quel senso di perplessità di fronte a un mondo colmo di storture, piccole e grandi.<br><br>
-        Quanto riesci a nuotarci dentro?<br>
+        Un test a-scientifico per scoprirlo.<br>
         8 domande. Nessuna risposta giusta. Solo verità scomode.
       </p>
     </div>
@@ -388,7 +404,10 @@
       </div>
     </div>
     <div class="result-card">
-      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-emoji-wrap">
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-profile-name" id="resultProfileName"></div>
+      </div>
       <p class="result-desc" id="resultDesc"></p>
       <p class="result-detail" id="resultDetail"></p>
       <div class="result-traits" id="resultTraits"></div>
@@ -493,7 +512,6 @@ const questions = [
   }
 ];
 
-
 const profiles = {
   androide: {
     title: "l'<em>androide</em>",
@@ -528,7 +546,6 @@ const profiles = {
     sPct: 90, gPct: 15
   }
 };
-
 
 let current = 0;
 let answers = new Array(8).fill(null);
@@ -607,6 +624,7 @@ function showResult() {
 
   document.getElementById('resultTitle').innerHTML = p.title;
   document.getElementById('resultEmoji').textContent = p.emoji;
+  document.getElementById('resultProfileName').innerHTML = p.title;
   document.getElementById('resultDesc').textContent = p.desc;
   document.getElementById('resultDetail').textContent = p.detail;
   document.getElementById('resultTraits').innerHTML = p.traits.map(t => `<span class="trait">${t}</span>`).join('');
